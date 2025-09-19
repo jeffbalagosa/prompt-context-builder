@@ -28,7 +28,7 @@ body {
 .app-shell {
   margin: 0 auto;
   padding: 48px clamp(24px, 5vw, 80px) 64px;
-  max-width: 1240px;
+  max-width: 70%;
 }
 
 .page-header {
@@ -172,6 +172,7 @@ select:focus {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 1rem;
 }
 
 .input-block label {
