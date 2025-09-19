@@ -83,7 +83,7 @@ function handlePresetChange(event) {
 }
 
 function buildPromptPayload() {
-  return `---\n# Role\n${fields.role.value.trim()}\n\n# Objective\n${fields.objective.value.trim()}\n\n# Instructions\n${fields.instructions.value.trim()}\n\n# Context\n${fields.context.value.trim()}\n\n# Example(s)\n    ## Good Example\n    ${fields.goodExample.value.trim() || "(provide a strong example here)"}\n    ## Bad Example\n    ${fields.badExample.value.trim() || "(call out a pitfall here)"}\n\n# Constraints\n${fields.constraints.value.trim() || "(list constraints here)"}\n\n# Output Style\n${fields.outputStyle.value.trim() || "(describe tone/style here)"}\n\n# Output Format\n${fields.outputFormat.value.trim() || "(outline the desired structure here)"}\n\n# Output Verbosity\n    - ${fields.outputVerbosity.value}\n\n# Thinking Effort\n    - ${fields.thinkingEffort.value}\n---`;
+  return `# Role\n${fields.role.value.trim()}\n\n# Objective\n${fields.objective.value.trim()}\n\n# Instructions\n${fields.instructions.value.trim()}\n\n# Context\n${fields.context.value.trim()}\n\n# Example(s)\n    ## Good Example\n    ${fields.goodExample.value.trim() || "(provide a strong example here)"}\n    ## Bad Example\n    ${fields.badExample.value.trim() || "(call out a pitfall here)"}\n\n# Constraints\n${fields.constraints.value.trim() || "(list constraints here)"}\n\n# Output Style\n${fields.outputStyle.value.trim() || "(describe tone/style here)"}\n\n# Output Format\n${fields.outputFormat.value.trim() || "(outline the desired structure here)"}\n\n# Output Verbosity\n    - ${fields.outputVerbosity.value}\n\n# Thinking Effort\n    - ${fields.thinkingEffort.value}`;
 }
 
 async function copyPrompt() {
