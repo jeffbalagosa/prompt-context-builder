@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prompt Context Builder</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="page-header">
+        <div>
+          <h1>Prompt Context Builder</h1>
+          <p class="subtitle">Build richer prompts with structured context and reusable templates.</p>
+        </div>
+        <div class="preset-picker">
+          <label for="presetSelect">Prompt presets</label>
+          <select id="presetSelect" aria-label="Prompt preset selector">
+            <option value="">Select a preset...</option>
+          </select>
+        </div>
+      </header>
+
+      <main class="layout-grid">
+        <section class="structure-panel" aria-labelledby="structureHeading">
+          <h2 id="structureHeading">Template guide</h2>
+          <ol class="structure-list">
+            <li><span># Role</span><p>Define the persona, expertise, or responsibilities the assistant must embrace.</p></li>
+            <li><span># Objective</span><p>State the high-level goal or outcome the assistant should achieve.</p></li>
+            <li><span># Instructions</span><p>List specific guidance, rules, or nuances for the assistant to follow.</p></li>
+            <li><span># Context</span><p>Provide background such as documents, users, or environmental details.</p></li>
+            <li><span># Example(s)</span><p>Share good vs. bad examples to shape the assistant's outputs.</p></li>
+            <li><span># Constraints</span><p>Clarify guardrails like time, scope, or compliance needs.</p></li>
+            <li><span># Output Style</span><p>Describe tone or presentation expectations.</p></li>
+            <li><span># Output Format</span><p>Specify structural requirements (tables, bullet lists, etc.).</p></li>
+            <li><span># Output Verbosity</span><p>Choose the desired detail level: concise, medium, high, or ultra.</p></li>
+            <li><span># Thinking Effort</span><p>Pick how much reasoning to apply: quick, medium, high, or ultra.</p></li>
+          </ol>
+        </section>
+
+        <section class="builder-panel" aria-labelledby="builderHeading">
+          <h2 id="builderHeading">Build your prompt</h2>
+          <form id="builderForm" novalidate>
+            <div class="input-block">
+              <label for="role">Role</label>
+              <textarea id="role" name="role" rows="2" placeholder="Who is the assistant?" required></textarea>
+            </div>
+            <div class="input-block">
+              <label for="objective">Objective</label>
+              <textarea id="objective" name="objective" rows="2" placeholder="What should the assistant achieve?" required></textarea>
+            </div>
+            <div class="input-block">
+              <label for="instructions">Instructions</label>
+              <textarea id="instructions" name="instructions" rows="4" placeholder="List rules, heuristics, or detailed steps." required></textarea>
+            </div>
+            <div class="input-block">
+              <label for="context">Context</label>
+              <textarea id="context" name="context" rows="4" placeholder="Provide background references, documents, or scenario context." required></textarea>
+            </div>
+            <fieldset class="examples-fieldset">
+              <legend>Example(s)</legend>
+              <div class="input-block">
+                <label for="goodExample">Good example</label>
+                <textarea id="goodExample" name="goodExample" rows="3" placeholder="Show an ideal response or behavior."></textarea>
+              </div>
+              <div class="input-block">
+                <label for="badExample">Bad example</label>
+                <textarea id="badExample" name="badExample" rows="3" placeholder="Highlight mistakes to avoid."></textarea>
+              </div>
+            </fieldset>
+            <div class="input-block">
+              <label for="constraints">Constraints</label>
+              <textarea id="constraints" name="constraints" rows="3" placeholder="List boundaries such as time limits or compliance rules."></textarea>
+            </div>
+            <div class="input-block">
+              <label for="outputStyle">Output style</label>
+              <textarea id="outputStyle" name="outputStyle" rows="2" placeholder="Tone, voice, or stylistic choices."></textarea>
+            </div>
+            <div class="input-block">
+              <label for="outputFormat">Output format</label>
+              <textarea id="outputFormat" name="outputFormat" rows="2" placeholder="Structure, layout, sections, or format requirements."></textarea>
+            </div>
+            <div class="input-block select-block">
+              <label for="outputVerbosity">Output verbosity</label>
+              <select id="outputVerbosity" name="outputVerbosity">
+                <option value="concise">concise</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+                <option value="ultra">ultra</option>
+              </select>
+            </div>
+            <div class="input-block select-block">
+              <label for="thinkingEffort">Thinking effort</label>
+              <select id="thinkingEffort" name="thinkingEffort">
+                <option value="quick">quick</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+                <option value="ultra">ultra</option>
+              </select>
+            </div>
+            <div class="actions">
+              <button type="button" id="copyButton">Copy Prompt To Clipboard</button>
+              <p class="status-message" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
