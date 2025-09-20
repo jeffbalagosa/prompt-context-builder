@@ -1,6 +1,10 @@
 const presetSelect = document.getElementById("presetSelect");
 const statusMessage = document.querySelector(".status-message");
 const copyButton = document.getElementById("copyButton");
+const presetPicker = document.querySelector(".preset-picker");
+
+let customPresetSelectReady = false;
+let syncCustomPresetUI = () => {};
 
 const fields = {
   role: document.getElementById("role"),
@@ -148,24 +152,248 @@ function hydratePresetOptions() {
   });
 }
 
+function initPresetCustomSelect() {
+  if (customPresetSelectReady || !presetPicker || !presetSelect) {
+    return;
+  }
+
+  const wrapper = presetPicker.querySelector('[data-select="presetSelect"]');
+  if (!wrapper) {
+    return;
+  }
+
+  const trigger = wrapper.querySelector('.custom-select__trigger');
+  const labelEl = wrapper.querySelector('.custom-select__label');
+  const optionsList = wrapper.querySelector('.custom-select__options');
+
+  if (!trigger || !labelEl || !optionsList) {
+    return;
+  }
+
+  const listId = presetSelect.id + 'Options';
+  optionsList.id = listId;
+  trigger.setAttribute('aria-controls', listId);
+  optionsList.setAttribute('aria-hidden', 'true');
+
+  const buildOptions = () => {
+    optionsList.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    Array.from(presetSelect.options).forEach((option) => {
+      const item = document.createElement('li');
+      item.className = 'custom-select__option';
+      item.setAttribute('role', 'option');
+      item.dataset.value = option.value;
+      item.textContent = option.textContent;
+      item.tabIndex = -1;
+      item.setAttribute('aria-selected', 'false');
+      fragment.appendChild(item);
+    });
+    optionsList.appendChild(fragment);
+  };
+
+  buildOptions();
+
+  const getOptionNodes = () =>
+    Array.from(optionsList.querySelectorAll('.custom-select__option'));
+
+  let isOpen = false;
+
+  syncCustomPresetUI = (value = presetSelect.value) => {
+    const options = getOptionNodes();
+    const selectedOption =
+      Array.from(presetSelect.options).find((opt) => opt.value === value) ||
+      presetSelect.options[0];
+    const labelText = selectedOption ? selectedOption.textContent : 'Select a preset...';
+    labelEl.textContent = labelText;
+    trigger.dataset.selected = value ? 'true' : 'false';
+    options.forEach((node) => {
+      const isSelected = node.dataset.value === value;
+      node.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      node.classList.toggle('is-selected', isSelected);
+    });
+  };
+
+  function openMenu(focusStrategy) {
+    if (isOpen) {
+      return;
+    }
+
+    isOpen = true;
+    wrapper.classList.add('is-open');
+    trigger.setAttribute('aria-expanded', 'true');
+    optionsList.setAttribute('aria-hidden', 'false');
+
+    const options = getOptionNodes();
+    if (options.length) {
+      let active = options.find((node) => node.dataset.value === presetSelect.value) || options[0];
+
+      if (focusStrategy === 'first') {
+        active = options[0];
+      } else if (focusStrategy === 'last') {
+        active = options[options.length - 1];
+      }
+
+      if (active) {
+        requestAnimationFrame(() => {
+          active.focus();
+          const offset =
+            active.offsetTop - optionsList.clientHeight / 2 + active.clientHeight / 2;
+          optionsList.scrollTop = Math.max(offset, 0);
+        });
+      }
+    }
+
+    document.addEventListener('click', handleDocumentClick);
+  }
+
+  function closeMenu(focusTrigger = false) {
+    if (!isOpen) {
+      return;
+    }
+
+    isOpen = false;
+    wrapper.classList.remove('is-open');
+    trigger.setAttribute('aria-expanded', 'false');
+    optionsList.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('click', handleDocumentClick);
+
+    if (focusTrigger) {
+      trigger.focus();
+    }
+  }
+
+  function toggleMenu() {
+    if (isOpen) {
+      closeMenu(true);
+    } else {
+      openMenu();
+    }
+  }
+
+  function handleDocumentClick(event) {
+    if (!wrapper.contains(event.target)) {
+      closeMenu();
+    }
+  }
+
+  function focusOptionByIndex(index) {
+    const options = getOptionNodes();
+    if (!options.length) {
+      return;
+    }
+
+    const clamped = Math.max(0, Math.min(index, options.length - 1));
+    options[clamped].focus();
+  }
+
+  function handleTriggerKeydown(event) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!isOpen) {
+        openMenu(event.key === 'ArrowUp' ? 'last' : 'first');
+      }
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleMenu();
+    } else if (event.key === 'Escape' && isOpen) {
+      event.preventDefault();
+      closeMenu(true);
+    }
+  }
+
+  function handleOptionKeydown(event) {
+    const options = getOptionNodes();
+    const currentIndex = options.indexOf(event.target);
+
+    if (currentIndex === -1) {
+      return;
+    }
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        focusOptionByIndex(Math.min(currentIndex + 1, options.length - 1));
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        focusOptionByIndex(Math.max(currentIndex - 1, 0));
+        break;
+      case 'Home':
+        event.preventDefault();
+        focusOptionByIndex(0);
+        break;
+      case 'End':
+        event.preventDefault();
+        focusOptionByIndex(options.length - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        selectOption(event.target.dataset.value);
+        break;
+      case 'Escape':
+        event.preventDefault();
+        closeMenu(true);
+        break;
+      default:
+        break;
+    }
+  }
+
+  function selectOption(value) {
+    presetSelect.value = value;
+    presetSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    closeMenu(true);
+  }
+
+  optionsList.addEventListener('click', (event) => {
+    const option = event.target.closest('.custom-select__option');
+
+    if (!option) {
+      return;
+    }
+
+    event.preventDefault();
+    selectOption(option.dataset.value);
+  });
+
+  optionsList.addEventListener('keydown', handleOptionKeydown);
+
+  trigger.addEventListener('click', (event) => {
+    event.preventDefault();
+    toggleMenu();
+  });
+
+  trigger.addEventListener('keydown', handleTriggerKeydown);
+
+  presetSelect.addEventListener('change', () => syncCustomPresetUI());
+
+  presetPicker.classList.add('custom-select-ready');
+  syncCustomPresetUI();
+  customPresetSelectReady = true;
+}
+
 function handlePresetChange(event) {
-  const selected = presets.find((preset) => preset.id === event.target.value);
+  const { value } = event.target;
+  const selected = presets.find((preset) => preset.id === value);
   if (!selected) {
+    syncCustomPresetUI(value);
     return;
   }
 
   const { values } = selected;
-  Object.entries(values).forEach(([key, value]) => {
+  Object.entries(values).forEach(([key, mappedValue]) => {
     if (fields[key]) {
       if (fields[key] instanceof HTMLSelectElement) {
-        fields[key].value = value;
+        fields[key].value = mappedValue;
       } else {
-        fields[key].value = value;
+        fields[key].value = mappedValue;
       }
     }
   });
 
-  announce(`Loaded the ${selected.label} preset.`);
+  syncCustomPresetUI(value);
+  announce('Loaded the ' + selected.label + ' preset.');
 }
 
 function buildPromptPayload() {
@@ -218,5 +446,6 @@ function announce(message, isError = false) {
 }
 
 hydratePresetOptions();
+initPresetCustomSelect();
 presetSelect.addEventListener("change", handlePresetChange);
 copyButton.addEventListener("click", copyPrompt);

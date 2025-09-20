@@ -27,6 +27,23 @@
           <select id="presetSelect" aria-label="Prompt preset selector">
             <option value="">Select a preset...</option>
           </select>
+          <div class="custom-select" data-select="presetSelect">
+            <button
+              type="button"
+              class="custom-select__trigger"
+              id="presetSelectTrigger"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
+              <span class="custom-select__label">Select a preset...</span>
+              <span class="custom-select__chevron" aria-hidden="true"></span>
+            </button>
+            <ul
+              class="custom-select__options"
+              role="listbox"
+              aria-labelledby="presetSelectTrigger"
+            ></ul>
+          </div>
         </div>
       </header>
 
