@@ -24,12 +24,151 @@ body {
   min-height: 100vh;
   background: var(--bg-main);
   color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
 }
 
 .app-shell {
+  position: relative;
+  z-index: 1;
   margin: 0 auto;
   padding: 48px clamp(24px, 5vw, 80px) 64px;
   max-width: 70%;
+}
+
+.orb-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.orb {
+  position: absolute;
+  width: clamp(160px, 24vw, 320px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  opacity: 0.55;
+  background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.4), rgba(14, 165, 233, 0));
+  mix-blend-mode: screen;
+  filter: blur(12px);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: transform;
+}
+
+.orb--1 {
+  top: 12%;
+  left: 8%;
+  animation-name: orbFloatA;
+  animation-duration: 22s;
+  animation-delay: -6s;
+}
+
+.orb--2 {
+  top: 18%;
+  right: 12%;
+  animation-name: orbFloatB;
+  animation-duration: 28s;
+  animation-delay: -12s;
+  background: radial-gradient(circle at 25% 35%, rgba(192, 132, 252, 0.35), rgba(124, 58, 237, 0));
+}
+
+.orb--3 {
+  bottom: 18%;
+  left: 6%;
+  animation-name: orbFloatC;
+  animation-duration: 26s;
+  animation-delay: -4s;
+  background: radial-gradient(circle at 30% 30%, rgba(52, 211, 153, 0.32), rgba(16, 185, 129, 0));
+}
+
+.orb--4 {
+  bottom: 14%;
+  right: 22%;
+  animation-name: orbFloatD;
+  animation-duration: 32s;
+  animation-delay: -10s;
+  background: radial-gradient(circle at 30% 30%, rgba(251, 191, 36, 0.28), rgba(245, 158, 11, 0));
+}
+
+.orb--5 {
+  top: 42%;
+  left: 50%;
+  transform: translate3d(-50%, -50px, 0);
+  animation-name: orbFloatE;
+  animation-duration: 36s;
+  animation-delay: -18s;
+  background: radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.3), rgba(37, 99, 235, 0));
+}
+
+@keyframes orbFloatA {
+  0% {
+    transform: translate3d(-60px, -10px, 0) scale(0.92);
+  }
+  50% {
+    transform: translate3d(80px, -160px, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-60px, -10px, 0) scale(0.92);
+  }
+}
+
+@keyframes orbFloatB {
+  0% {
+    transform: translate3d(50px, -70px, 0) scale(0.88);
+  }
+  50% {
+    transform: translate3d(-110px, 90px, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(50px, -70px, 0) scale(0.88);
+  }
+}
+
+@keyframes orbFloatC {
+  0% {
+    transform: translate3d(-70px, 60px, 0) scale(0.94) rotate(-4deg);
+  }
+  50% {
+    transform: translate3d(110px, -70px, 0) scale(1.08) rotate(6deg);
+  }
+  100% {
+    transform: translate3d(-70px, 60px, 0) scale(0.94) rotate(-4deg);
+  }
+}
+
+@keyframes orbFloatD {
+  0% {
+    transform: translate3d(70px, 20px, 0) scale(0.9) rotate(6deg);
+  }
+  50% {
+    transform: translate3d(-120px, -110px, 0) scale(1.08) rotate(-4deg);
+  }
+  100% {
+    transform: translate3d(70px, 20px, 0) scale(0.9) rotate(6deg);
+  }
+}
+
+@keyframes orbFloatE {
+  0% {
+    transform: translate3d(-50%, -50px, 0) scale(0.88);
+  }
+  50% {
+    transform: translate3d(-45%, 140px, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-50%, -50px, 0) scale(0.88);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb {
+    animation: none;
+    transform: none !important;
+  }
 }
 
 .page-header {
