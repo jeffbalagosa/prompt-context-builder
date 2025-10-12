@@ -89,7 +89,7 @@ Or double-click `index.html` to launch locally.
 
 ## 📜 License
 
-MIT License © 2025 — [Your Name or Organization]
+MIT License © 2025 — Jeff Balagosa
 
 ---
 
