@@ -286,10 +286,11 @@ body {
 .slider::after {
   content: '';
   position: absolute;
-  top: 4px;
+  top: 50%;
   left: 4px;
   width: 24px;
   height: 24px;
+  transform: translateY(-50%);
   /* brighter knob for better contrast */
   background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(245,245,245,0.9) 100%);
   border: 1px solid rgba(0, 0, 0, 0.16);
@@ -304,7 +305,7 @@ body {
 }
 
 .switch input:checked + .slider::after {
-  transform: translateX(24px);
+  transform: translateX(24px) translateY(-50%);
 }
 
 .switch input:focus + .slider {
