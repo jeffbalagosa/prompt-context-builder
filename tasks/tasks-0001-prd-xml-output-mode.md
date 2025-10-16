@@ -23,11 +23,11 @@
 ## Tasks
 
 - [ ] 1.0 Add Format Toggle UI to Header
-  - [ ] 1.1 Locate the `.page-header` section in `index.html` (around line 18)
-  - [ ] 1.2 Add a new `<div class="format-toggle">` container after the `.preset-picker` div (before closing `</header>`)
-  - [ ] 1.3 Add a `<label for="formatSelect">` with text "Output format"
-  - [ ] 1.4 Add a `<select id="formatSelect">` element with `aria-label="Output format selector"`
-  - [ ] 1.5 Add two `<option>` elements: `<option value="markdown" selected>Markdown</option>` and `<option value="xml">XML</option>`
+  - [x] 1.1 Locate the `.page-header` section in `index.html` (around line 18)
+  - [x] 1.2 Add a new `<div class="format-toggle">` container after the `.preset-picker` div (before closing `</header>`) — added.
+  - [x] 1.3 Add a `<label for="formatSelect">` with text "Output format" — added.
+  - [x] 1.4 Add a slider toggle input (checkbox) with `id="formatSelect"` and `aria-label="Toggle output format: Markdown or XML"` — unchecked = Markdown, checked = XML.
+  - [x] 1.5 Document mapping: unchecked → Markdown (default), checked → XML. No `<option>` elements used when slider present.
   - [ ] 1.6 Verify the format toggle appears in the header near the preset picker when opening `index.html` in browser
 
 - [ ] 2.0 Implement XML Escaping Helper Function
@@ -67,13 +67,13 @@
   - [ ] 4.9 Test with special characters in fields (e.g., `<`, `>`, `&`, quotes) to verify XML escaping works correctly
 
 - [ ] 5.0 Add Styling for Format Toggle Control
-  - [ ] 5.1 Open `style.css` and locate the `.preset-picker` styles (around line 235)
-  - [ ] 5.2 Create a new `.format-toggle` class selector below the preset picker styles
-  - [ ] 5.3 Apply `display: flex;`, `flex-direction: column;`, and `gap: 8px;` for layout
-  - [ ] 5.4 Style the label with `font-size: 0.875rem;`, `font-weight: 500;`, and `color: var(--text-muted);`
-  - [ ] 5.5 Style the select dropdown with consistent border, padding, background, and border-radius to match `.preset-picker select`
-  - [ ] 5.6 Use `background: var(--bg-card);`, `border: 1px solid var(--border-soft);`, `border-radius: var(--radius-md);`
-  - [ ] 5.7 Add padding: `padding: 10px 14px;`, font styles, and color: `color: var(--text-primary);`
-  - [ ] 5.8 Add hover and focus states with `border-color: var(--accent);` and `outline` styling
+  - [x] 5.1 Open `style.css` and locate the `.preset-picker` styles (around line 235) — done.
+  - [x] 5.2 Create a new `.format-toggle` class selector below the preset picker styles — done.
+  - [x] 5.3 Apply `display: flex;`, `flex-direction: column;`, and `gap: 8px;` for layout — done.
+  - [x] 5.4 Style the label with `font-size: 0.875rem;`, `font-weight: 500;`, and `color: var(--text-muted);` — approximated with project variables.
+  - [x] 5.5 Style the control (slider) with consistent border, padding, background, and border-radius to match `.preset-picker` select — implemented for the slider.
+  - [x] 5.6 Use `background: var(--bg-card);`, `border: 1px solid var(--border-soft);`, `border-radius: var(--radius-md);` — applied to slider track.
+  - [x] 5.7 Add padding: `padding: 10px 14px;`, font styles, and color: `color: var(--text-primary);` — labels and control spacing applied.
+  - [x] 5.8 Add hover and focus states with `border-color: var(--accent);` and `outline` styling — focus and checked states implemented.
   - [ ] 5.9 Verify the format toggle visually matches the preset picker styling
   - [ ] 5.10 Test responsive behavior - ensure toggle remains accessible on smaller screens

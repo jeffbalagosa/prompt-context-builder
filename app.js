@@ -2,6 +2,7 @@ const presetSelect = document.getElementById("presetSelect");
 const statusMessage = document.querySelector(".status-message");
 const copyButton = document.getElementById("copyButton");
 const presetPicker = document.querySelector(".preset-picker");
+const formatSelect = document.getElementById("formatSelect");
 
 let customPresetSelectReady = false;
 let syncCustomPresetUI = () => {};
@@ -142,6 +143,17 @@ const presets = [
     },
   },
 ];
+
+// Utility: escape string for XML
+function escapeXML(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;") // must run first
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
 
 function hydratePresetOptions() {
   presets.forEach((preset) => {
@@ -412,8 +424,54 @@ function buildPromptPayload() {
   }\n\n# Thinking Effort\n    - ${fields.thinkingEffort.value}`;
 }
 
+function buildXMLPayload() {
+  const role = escapeXML(fields.role.value.trim());
+  const objective = escapeXML(fields.objective.value.trim());
+  const instructions = escapeXML(fields.instructions.value.trim());
+
+  const contextRaw = fields.context.value.trim();
+  const context = contextRaw ? escapeXML(contextRaw) : null;
+
+  const goodRaw = fields.goodExample.value.trim();
+  const badRaw = fields.badExample.value.trim();
+  const good = goodRaw ? escapeXML(goodRaw) : null;
+  const bad = badRaw ? escapeXML(badRaw) : null;
+
+  const constraintsRaw = fields.constraints.value.trim();
+  const constraints = constraintsRaw ? escapeXML(constraintsRaw) : null;
+
+  const outputStyleRaw = fields.outputStyle.value.trim();
+  const outputStyle = outputStyleRaw ? escapeXML(outputStyleRaw) : null;
+  const outputFormatRaw = fields.outputFormat.value.trim();
+  const outputFormat = outputFormatRaw ? escapeXML(outputFormatRaw) : null;
+  const verbosity = escapeXML(fields.outputVerbosity.value || "");
+  const thinking = escapeXML(fields.thinkingEffort.value || "");
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<prompt>\n';
+  xml += `  <role>${role}</role>\n`;
+  xml += `  <objective>${objective}</objective>\n`;
+  xml += `  <instructions>${instructions}</instructions>\n`;
+  xml += context ? `  <context>${context}</context>\n` : `  <context />\n`;
+  xml += '  <examples>\n';
+  xml += good ? `    <good>${good}</good>\n` : `    <good />\n`;
+  xml += bad ? `    <bad>${bad}</bad>\n` : `    <bad />\n`;
+  xml += '  </examples>\n';
+  xml += constraints ? `  <constraints>${constraints}</constraints>\n` : `  <constraints />\n`;
+  xml += '  <output>\n';
+  xml += outputStyle ? `    <style>${outputStyle}</style>\n` : `    <style />\n`;
+  xml += outputFormat ? `    <format>${outputFormat}</format>\n` : `    <format />\n`;
+  xml += `    <verbosity>${verbosity}</verbosity>\n`;
+  xml += '  </output>\n';
+  xml += `  <thinkingEffort>${thinking}</thinkingEffort>\n`;
+  xml += '</prompt>';
+
+  return xml;
+}
+
 async function copyPrompt() {
-  const payload = buildPromptPayload();
+  const isXML = formatSelect && formatSelect.checked;
+  const payload = isXML ? buildXMLPayload() : buildPromptPayload();
 
   try {
     await navigator.clipboard.writeText(payload);
