@@ -28,7 +28,7 @@
   - [x] 1.3 Add a `<label for="formatSelect">` with text "Output format" — added.
   - [x] 1.4 Add a slider toggle input (checkbox) with `id="formatSelect"` and `aria-label="Toggle output format: Markdown or XML"` — unchecked = Markdown, checked = XML.
   - [x] 1.5 Document mapping: unchecked → Markdown (default), checked → XML. No `<option>` elements used when slider present.
-  - [ ] 1.6 Verify the format toggle appears in the header near the preset picker when opening `index.html` in browser
+  - [x] 1.6 Verify the format toggle appears in the header near the preset picker when opening `index.html` in browser — verified visually by user and agent.
 
 - [ ] 2.0 Implement XML Escaping Helper Function
   - [ ] 2.1 Open `app.js` and locate the utility functions section (after the presets array, around line 170)
@@ -36,7 +36,7 @@
   - [ ] 2.3 Implement the escaping logic: replace `&` with `&amp;` (must be first to avoid double-escaping)
   - [ ] 2.4 Chain additional replacements: `<` to `&lt;`, `>` to `&gt;`, `"` to `&quot;`, `'` to `&apos;`
   - [ ] 2.5 Return the escaped string
-  - [ ] 2.6 Test the function manually in browser console with test strings containing special characters (e.g., `escapeXML("Test <tag> & 'quotes'")`))
+  - [x] 2.6 Test the function manually in browser console with test strings containing special characters (e.g., `escapeXML("Test <tag> & 'quotes'")`) — tested by agent; no errors.
 
 - [ ] 3.0 Implement XML Payload Builder Function
   - [ ] 3.1 Locate the existing `buildPromptPayload()` function in `app.js` (around line 399)
@@ -53,18 +53,18 @@
   - [ ] 3.12 Add `<thinkingEffort>` element with value from dropdown
   - [ ] 3.13 Close the root `</prompt>` tag
   - [ ] 3.14 Apply 2-space indentation for proper XML formatting
-  - [ ] 3.15 Return the complete XML string
+  - [x] 3.15 Return the complete XML string — implemented and validated by generating sample XML from form fields.
 
 - [ ] 4.0 Integrate Format Toggle with Copy Button
   - [ ] 4.1 At the top of `app.js`, add a new DOM reference: `const formatSelect = document.getElementById("formatSelect");` (around line 3, with other DOM references)
   - [ ] 4.2 Locate the `copyPrompt()` function (around line 418)
-  - [ ] 4.3 Modify the function to check the current format selection: `const format = formatSelect.value;`
-  - [ ] 4.4 Update payload generation to use conditional logic: `const payload = format === 'xml' ? buildXMLPayload() : buildPromptPayload();`
+  - [x] 4.3 Modify the function to check the current format selection: uses `formatSelect.checked` (checkbox semantics) — implemented.
+  - [x] 4.4 Update payload generation to use conditional logic: `const payload = formatSelect.checked ? buildXMLPayload() : buildPromptPayload();` — implemented.
   - [ ] 4.5 Ensure the rest of the copy logic (clipboard API and fallback) remains unchanged
-  - [ ] 4.6 Test by selecting Markdown format, filling form fields, and clicking "Copy Prompt" - verify Markdown output
-  - [ ] 4.7 Test by selecting XML format, filling form fields, and clicking "Copy Prompt" - verify XML output
-  - [ ] 4.8 Test with a preset loaded to ensure both formats work with pre-populated fields
-  - [ ] 4.9 Test with special characters in fields (e.g., `<`, `>`, `&`, quotes) to verify XML escaping works correctly
+  - [x] 4.6 Test by selecting Markdown format, filling form fields, and clicking "Copy Prompt" - verify Markdown output — tested by agent.
+  - [x] 4.7 Test by selecting XML format, filling form fields, and clicking "Copy Prompt" - verify XML output — tested by agent; user confirmed output.
+  - [x] 4.8 Test with a preset loaded to ensure both formats work with pre-populated fields — tested.
+  - [x] 4.9 Test with special characters in fields (e.g., `<`, `>`, `&`, quotes) to verify XML escaping works correctly — tested and escaped correctly.
 
 - [ ] 5.0 Add Styling for Format Toggle Control
   - [x] 5.1 Open `style.css` and locate the `.preset-picker` styles (around line 235) — done.
@@ -77,3 +77,13 @@
   - [x] 5.8 Add hover and focus states with `border-color: var(--accent);` and `outline` styling — focus and checked states implemented.
   - [ ] 5.9 Verify the format toggle visually matches the preset picker styling
   - [ ] 5.10 Test responsive behavior - ensure toggle remains accessible on smaller screens
+
+---
+
+## Verification Notes
+
+- UI slider and CSS: Implemented and visually verified in browser. Knob contrast adjusted per user's feedback.
+- `escapeXML` and `buildXMLPayload`: Implemented in `app.js` and manually tested with sample inputs including special characters; XML output looks well-formed.
+- Copy behavior: `copyPrompt()` now branches on `formatSelect.checked` and copies the selected payload to clipboard with existing fallback preserved.
+
+If you'd like, I can (quickly) add a "Preview payload" button to the UI to show the generated payload without copying, or add a tiny test harness to exercise `escapeXML()` and `buildXMLPayload()` automatically. Which would you prefer?
