@@ -46,14 +46,21 @@
           </div>
         </div>
         <div class="format-toggle">
-          <label for="formatSelect">Output format</label>
+          <label id="formatToggleLabel" for="formatSelect">Output format</label>
           <div class="format-toggle__control">
-            <span class="format-label">Markdown</span>
-            <label class="switch" aria-hidden="false">
-              <input type="checkbox" id="formatSelect" name="formatSelect" aria-label="Toggle output format: Markdown or XML" />
-              <span class="slider" aria-hidden="true"></span>
-            </label>
-            <span class="format-label">XML</span>
+            <button
+              type="button"
+              id="formatSelect"
+              class="format-toggle__button"
+              data-format="markdown"
+              role="switch"
+              aria-checked="false"
+              aria-describedby="formatToggleDescription"
+            >
+              <span class="format-toggle__option format-toggle__option--markdown is-active">Markdown</span>
+              <span class="format-toggle__option format-toggle__option--xml">XML</span>
+              <span id="formatToggleDescription" class="visually-hidden">Current format: Markdown</span>
+            </button>
           </div>
         </div>
       </header>

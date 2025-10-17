@@ -7,6 +7,54 @@ const formatSelect = document.getElementById("formatSelect");
 let customPresetSelectReady = false;
 let syncCustomPresetUI = () => {};
 
+const formatToggleDescription = document.getElementById("formatToggleDescription");
+const formatOptionMarkdown = formatSelect
+  ? formatSelect.querySelector(".format-toggle__option--markdown")
+  : null;
+const formatOptionXML = formatSelect
+  ? formatSelect.querySelector(".format-toggle__option--xml")
+  : null;
+
+function updateFormatToggleState(isXML) {
+  if (!formatSelect) {
+    return;
+  }
+
+  formatSelect.setAttribute("aria-checked", String(isXML));
+  formatSelect.dataset.format = isXML ? "xml" : "markdown";
+
+  if (formatOptionMarkdown) {
+    formatOptionMarkdown.classList.toggle("is-active", !isXML);
+  }
+
+  if (formatOptionXML) {
+    formatOptionXML.classList.toggle("is-active", isXML);
+  }
+
+  if (formatToggleDescription) {
+    formatToggleDescription.textContent = `Current format: ${isXML ? "XML" : "Markdown"}`;
+  }
+}
+
+if (formatSelect) {
+  updateFormatToggleState(false);
+
+  formatSelect.addEventListener("click", () => {
+    const isCurrentlyXML = formatSelect.dataset.format === "xml";
+    updateFormatToggleState(!isCurrentlyXML);
+  });
+
+  formatSelect.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      updateFormatToggleState(true);
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      updateFormatToggleState(false);
+    }
+  });
+}
+
 const fields = {
   role: document.getElementById("role"),
   objective: document.getElementById("objective"),
@@ -470,7 +518,7 @@ function buildXMLPayload() {
 }
 
 async function copyPrompt() {
-  const isXML = formatSelect && formatSelect.checked;
+  const isXML = formatSelect ? formatSelect.dataset.format === "xml" : false;
   const payload = isXML ? buildXMLPayload() : buildPromptPayload();
 
   try {
