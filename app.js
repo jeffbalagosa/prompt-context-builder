@@ -4,6 +4,11 @@ const copyButton = document.getElementById("copyButton");
 const presetPicker = document.querySelector(".preset-picker");
 const formatSelect = document.getElementById("formatSelect");
 
+// Auto-save constants
+const STORAGE_KEY = 'promptBuilderDraft';
+const STORAGE_FORMAT_KEY = 'promptBuilderFormat';
+const DEBOUNCE_DELAY = 500;
+
 let customPresetSelectReady = false;
 let syncCustomPresetUI = () => {};
 
@@ -34,6 +39,9 @@ function updateFormatToggleState(isXML) {
   if (formatToggleDescription) {
     formatToggleDescription.textContent = `Current format: ${isXML ? "XML" : "Markdown"}`;
   }
+
+  // Save format preference
+  saveFormatPreference(isXML);
 }
 
 if (formatSelect) {
@@ -68,6 +76,72 @@ const fields = {
   outputVerbosity: document.getElementById("outputVerbosity"),
   thinkingEffort: document.getElementById("thinkingEffort"),
 };
+
+// Auto-save utility functions
+function saveFormData() {
+  const formData = {};
+  Object.entries(fields).forEach(([key, field]) => {
+    if (field) {
+      formData[key] = field.value;
+    }
+  });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+  } catch (err) {
+    console.warn('Failed to save form data:', err);
+  }
+}
+
+function loadFormData() {
+  try {
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    if (savedData) {
+      const formData = JSON.parse(savedData);
+      Object.entries(formData).forEach(([key, value]) => {
+        if (fields[key] && value !== undefined) {
+          fields[key].value = value;
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('Failed to load form data:', err);
+  }
+}
+
+function clearFormData() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (err) {
+    console.warn('Failed to clear form data:', err);
+  }
+}
+
+function saveFormatPreference(isXML) {
+  try {
+    localStorage.setItem(STORAGE_FORMAT_KEY, JSON.stringify(isXML));
+  } catch (err) {
+    console.warn('Failed to save format preference:', err);
+  }
+}
+
+function loadFormatPreference() {
+  try {
+    const savedFormat = localStorage.getItem(STORAGE_FORMAT_KEY);
+    if (savedFormat !== null) {
+      const isXML = JSON.parse(savedFormat);
+      updateFormatToggleState(isXML);
+    }
+  } catch (err) {
+    console.warn('Failed to load format preference:', err);
+  }
+}
+
+// Debounce helper
+let saveTimeout;
+function debouncedSave() {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(saveFormData, DEBOUNCE_DELAY);
+}
 
 const presets = [
   {
@@ -441,6 +515,9 @@ function handlePresetChange(event) {
     return;
   }
 
+  // Clear saved data when preset is selected
+  clearFormData();
+
   const { values } = selected;
   Object.entries(values).forEach(([key, mappedValue]) => {
     if (fields[key]) {
@@ -551,7 +628,20 @@ function announce(message, isError = false) {
   statusMessage.style.color = isError ? "#f87171" : "var(--accent)";
 }
 
+// Set up auto-save listeners for all form fields
+Object.values(fields).forEach(field => {
+  if (field) {
+    field.addEventListener('input', debouncedSave);
+  }
+});
+
+// Initialize app
 hydratePresetOptions();
 initPresetCustomSelect();
+
+// Restore saved data on page load
+loadFormData();
+loadFormatPreference();
+
 presetSelect.addEventListener("change", handlePresetChange);
 copyButton.addEventListener("click", copyPrompt);
