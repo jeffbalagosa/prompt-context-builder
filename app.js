@@ -46,7 +46,8 @@ function updateFormatToggleState(isXML) {
 }
 
 if (formatSelect) {
-  updateFormatToggleState(false);
+  // Load saved format preference first, then set up event listeners
+  loadFormatPreference();
 
   formatSelect.addEventListener("click", () => {
     const isCurrentlyXML = formatSelect.dataset.format === "xml";
@@ -671,7 +672,6 @@ initPresetCustomSelect();
 
 // Restore saved data on page load
 loadFormData();
-loadFormatPreference();
 
 presetSelect.addEventListener("change", handlePresetChange);
 copyButton.addEventListener("click", copyPrompt);
