@@ -1,6 +1,7 @@
 const presetSelect = document.getElementById("presetSelect");
 const statusMessage = document.querySelector(".status-message");
 const copyButton = document.getElementById("copyButton");
+const resetButton = document.getElementById("resetButton");
 const presetPicker = document.querySelector(".preset-picker");
 const formatSelect = document.getElementById("formatSelect");
 
@@ -141,6 +142,35 @@ let saveTimeout;
 function debouncedSave() {
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(saveFormData, DEBOUNCE_DELAY);
+}
+
+// Reset form function
+function resetForm() {
+  // Clear all field values
+  Object.values(fields).forEach(field => {
+    if (field) {
+      if (field instanceof HTMLSelectElement) {
+        // Reset selects to first option (default)
+        field.selectedIndex = 0;
+      } else {
+        // Clear textareas and inputs
+        field.value = '';
+      }
+    }
+  });
+
+  // Clear localStorage data
+  clearFormData();
+
+  // Reset preset selector
+  presetSelect.value = '';
+  syncCustomPresetUI('');
+
+  // Reset format toggle to Markdown
+  updateFormatToggleState(false);
+
+  // Show confirmation message
+  announce('Form reset successfully.');
 }
 
 const presets = [
@@ -645,3 +675,4 @@ loadFormatPreference();
 
 presetSelect.addEventListener("change", handlePresetChange);
 copyButton.addEventListener("click", copyPrompt);
+resetButton.addEventListener("click", resetForm);
