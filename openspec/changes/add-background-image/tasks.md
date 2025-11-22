@@ -7,5 +7,5 @@
 - [x] 2.3 Keep existing layout readable by preserving foreground container contrast (e.g., glass panels, gradients).
 
 ## 3. Validation
-- [ ] 3.1 Manually load `index.html` in a desktop browser, confirm the background image fills the viewport without tiling, and content remains legible.
-- [ ] 3.2 Resize the window to ensure the image maintains coverage and never appears scaled below its original size.
+- [X] 3.1 Manually load `index.html` in a desktop browser, confirm the background image fills the viewport without tiling, and content remains legible.
+- [x] 3.2 Resize the window to ensure the image maintains coverage and never appears scaled below its original size.
