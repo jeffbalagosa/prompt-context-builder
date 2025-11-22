@@ -24,6 +24,32 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: max(1456px, 100vw);
+  height: max(816px, 100vh);
+  transform: translate(-50%, -50%);
+  background-image: url("assets/images/computer-background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: -2;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
   background: radial-gradient(
       circle at 18% 12%,
       rgba(125, 211, 252, 0.2),
@@ -34,10 +60,9 @@ body {
       rgba(244, 114, 182, 0.12),
       transparent 48%
     ),
-    var(--bg-main);
-  color: var(--text-primary);
-  position: relative;
-  overflow-x: hidden;
+    rgba(5, 8, 20, 0.82);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .app-shell {
@@ -54,6 +79,7 @@ body {
   pointer-events: none;
   overflow: hidden;
   z-index: 0;
+  display: none;
 }
 
 .orb {
