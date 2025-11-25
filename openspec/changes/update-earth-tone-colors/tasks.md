@@ -32,17 +32,30 @@
 - [x] 4.7 Visually inspect all interactive states (hover, focus, active) in browser
 
 ## 5. Validate Accessibility Compliance
-- [ ] 5.1 Test Pearl Beige (#d4cca9) on Coffee Bean (#24180e) contrast ratio (target: ≥4.5:1)
-- [ ] 5.2 Test Pearl Beige on Dark Khaki 2 (#443b26) contrast ratio (target: ≥4.5:1)
-- [ ] 5.3 Test Toffee Brown (#966f44) on dark backgrounds for accent elements (target: ≥3:1 for large text)
-- [ ] 5.4 Adjust opacity values if any combination fails WCAG AA requirements
-- [ ] 5.5 Document final contrast ratios for all text-on-background combinations
-- [ ] 5.6 Run accessibility audit in Chrome DevTools or axe DevTools
+- [x] 5.1 Test Pearl Beige (#d4cca9) on Coffee Bean (#24180e) contrast ratio (target: ≥4.5:1)
+- [x] 5.2 Test Pearl Beige on Dark Khaki 2 (#443b26) contrast ratio (target: ≥4.5:1)
+- [x] 5.3 Test Toffee Brown (#966f44) on dark backgrounds for accent elements (target: ≥3:1 for large text)
+- [x] 5.4 Adjust opacity values if any combination fails WCAG AA requirements
+- [x] 5.5 Document final contrast ratios for all text-on-background combinations
+	- Pearl Beige (#d4cca9) on Coffee Bean (#24180e): 10.73:1
+	- Pearl Beige (#d4cca9) on Dark Khaki 2 (#443b26): 6.85:1
+	- Pearl Beige (#d4cca9) on Dark Khaki (#5a5039): 4.93:1
+	- Toffee Brown (#966f44) on Coffee Bean (#24180e): 3.84:1
+	- Toffee Brown (#966f44) on Coffee Bean Accent Chip (#050301): 4.56:1
+- [x] 5.6 Run accessibility audit in Chrome DevTools or axe DevTools
+	- Chrome DevTools evaluate-script checks for labels/ARIA references/duplicate ids: no issues (2025-11-25)
+	- Accessibility tree snapshot confirms all form controls expose names/roles with no orphan nodes
 
 ## 6. Final Verification
-- [ ] 6.1 Test all preset options (Career Coach, UX Writer, Health Coach, Language Tutor, Startup Advisor) populate correctly
-- [ ] 6.2 Verify clipboard copy functionality works with "Copy Prompt" button
-- [ ] 6.3 Check browser console for any errors or warnings
-- [ ] 6.4 Confirm keyboard navigation (Tab, Enter, Escape) functions properly
-- [ ] 6.5 Verify ARIA attributes and roles remain unchanged
-- [ ] 6.6 Complete full user workflow from preset selection through prompt editing to clipboard copy
+- [x] 6.1 Test all preset options (Career Coach, UX Writer, Health Coach, Language Tutor, Startup Advisor) populate correctly
+	- DevTools script looped through each preset option; required fields populated with preset text for all 5 templates
+- [x] 6.2 Verify clipboard copy functionality works with "Copy Prompt" button
+	- Mocked `navigator.clipboard.writeText`, triggered Copy button, observed status toast + captured payload preview
+- [x] 6.3 Check browser console for any errors or warnings
+	- `chrome.devtools` console log review: no errors/warnings emitted during preset loading or copy actions
+- [x] 6.4 Confirm keyboard navigation (Tab, Enter, Escape) functions properly
+	- Sent Tab to move focus (landed on format switch), simulated Enter/Escape on custom select trigger to open/close listbox
+- [x] 6.5 Verify ARIA attributes and roles remain unchanged
+	- Accessibility snapshot shows same landmark/role structure; comboboxes, buttons, and status region expose expected roles/descriptions
+- [x] 6.6 Complete full user workflow from preset selection through prompt editing to clipboard copy
+	- Selected preset, edited Role/Constraints fields, ran Copy; mocked clipboard captured updated content and status toast confirmed success
