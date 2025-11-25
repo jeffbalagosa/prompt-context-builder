@@ -39,18 +39,10 @@
 - [ ] 5.5 Document final contrast ratios for all text-on-background combinations
 - [ ] 5.6 Run accessibility audit in Chrome DevTools or axe DevTools
 
-## 6. Cross-Browser Testing
-- [ ] 6.1 Open `index.html` in Chrome and verify earth-tone colors render correctly
-- [ ] 6.2 Open `index.html` in Firefox and verify consistent color rendering
-- [ ] 6.3 Open `index.html` in Edge and verify consistent color rendering
-- [ ] 6.4 Test responsive behavior on mobile viewport (375px width)
-- [ ] 6.5 Test responsive behavior on tablet viewport (768px width)
-- [ ] 6.6 Confirm no visual regressions in layout, spacing, or component rendering
-
-## 7. Final Verification
-- [ ] 7.1 Test all preset options (Career Coach, UX Writer, Health Coach, Language Tutor, Startup Advisor) populate correctly
-- [ ] 7.2 Verify clipboard copy functionality works with "Copy Prompt" button
-- [ ] 7.3 Check browser console for any errors or warnings
-- [ ] 7.4 Confirm keyboard navigation (Tab, Enter, Escape) functions properly
-- [ ] 7.5 Verify ARIA attributes and roles remain unchanged
-- [ ] 7.6 Complete full user workflow from preset selection through prompt editing to clipboard copy
+## 6. Final Verification
+- [ ] 6.1 Test all preset options (Career Coach, UX Writer, Health Coach, Language Tutor, Startup Advisor) populate correctly
+- [ ] 6.2 Verify clipboard copy functionality works with "Copy Prompt" button
+- [ ] 6.3 Check browser console for any errors or warnings
+- [ ] 6.4 Confirm keyboard navigation (Tab, Enter, Escape) functions properly
+- [ ] 6.5 Verify ARIA attributes and roles remain unchanged
+- [ ] 6.6 Complete full user workflow from preset selection through prompt editing to clipboard copy
