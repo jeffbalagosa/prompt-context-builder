@@ -657,6 +657,13 @@ function fallbackCopy(text) {
 function announce(message, isError = false) {
   statusMessage.textContent = message;
   statusMessage.style.color = isError ? "#f87171" : "var(--accent)";
+
+  // Hide if empty, show if has content
+  if (!message || !message.trim()) {
+    statusMessage.style.display = "none";
+  } else {
+    statusMessage.style.display = "inline-flex";
+  }
 }
 
 // Set up auto-save listeners for all form fields
@@ -669,6 +676,11 @@ Object.values(fields).forEach(field => {
 // Initialize app
 hydratePresetOptions();
 initPresetCustomSelect();
+
+// Hide status message initially (it starts empty)
+if (statusMessage) {
+  statusMessage.style.display = "none";
+}
 
 // Restore saved data on page load
 loadFormData();
